@@ -47,7 +47,11 @@ function RectObj(x, y, l, w) {
 	this.l = l;
 	this.w = w;
 	this.o;
-
+	
+	this.display = function(){
+		rect(this.pos.x, this.pos.y, this.l, this.w);
+	};
+	
 	this.setOtherR = function(otherR){
 		this.o = otherR;
 	};

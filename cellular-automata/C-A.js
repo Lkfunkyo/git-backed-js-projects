@@ -5,6 +5,7 @@ function Cell(x, y, l, w) {
 
 	this.a = 255;
 	this.minus = 0;
+	this.degree = random(-0.25, 0.25);
 	this.r = {
 		tr: round(random(2, 5)),
 		tl: round(random(2, 5)),
@@ -17,17 +18,23 @@ function Cell(x, y, l, w) {
 	this.display = function(s, sW) {
 		var st = s || color(0);
 		var stW = sW || 1;
-
+		
+		push();
+		
+		translate(this.pos.x, this.pos.y);
+		rotate(this.degree);
+		
 		stroke(st);
 		strokeWeight(stW);
 
 		fill(this.a, this.a, this.a);
-		rect(this.pos.x, this.pos.y, this.l, this.w, this.r.tl, this.r.tr, this.r.br, this.r.bl);
+		rect(0, 0, this.l, this.w, this.r.tl, this.r.tr, this.r.br, this.r.bl);
+		
+		pop();
 	};
 
 	this.run = function() {
 		var floating = createVector(random(-1, 1), random(-1, 1));
-		
 		this.a -= this.minus;
 		this.isDead();
 
@@ -35,12 +42,12 @@ function Cell(x, y, l, w) {
 		if (this.a < 1) {
 			this.minus = 0;
 		}
-		if (this.a < 255 * (15 / 16)) {
+		if (this.a < 255 * (14 / 16)) {
 			this.state = true;
 		}
 		
 		this.runSpeed();
-		if(this.a > 255*(11/ 16)){
+		if(this.a > 255*(10/ 16)){
 			this.applySpeed(floating);
 		}
 	};
