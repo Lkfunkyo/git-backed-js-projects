@@ -5,22 +5,27 @@ function World(x, y) {
 	World.amount++;
 }
 
-function Mass(x, y){
+function Mass(x, y) {
 	this.prototype = Object.create(World.prototype);
-	
+
 	World.call(this, x, y);
-	
+
 	Mass.amount++;
 }
 
-function RectObj(x, y) {
+function RectObj(x, y, l, w) {
 	this.prototype = Object.create(Mass.prototype);
 
 	Mass.call(this, x, y);
+	
+	this.l = l;
+	this.w = w;
 
 	this.pos = createVector(this.x, this.y);
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
+	
+	
 
 	RectObj.amount++;
 }
@@ -40,43 +45,39 @@ function RoundObj(x, y, cS) {
 	this.distance;
 	this.radiiSum;
 	this.mouseDistance;
-	
-	this.display = function(){
-		ellipse(this.pos.x, this.pos.y, this.cS, this.cS);
-	};
 
 	this.applyForce = function(force) {
 		this.acceleration.add(force);
 	};
-	
-	this.applySpeed = function(speedVector){
+
+	this.applySpeed = function(speedVector) {
 		this.velocity.add(speedVector);
 	};
-	
-	this.runAccel = function(){
+
+	this.runAccel = function() {
 		this.velocity.add(this.acceleration);
 		this.pos.add(this.velocity);
-		
+
 		this.acceleration.mult(0);
-		
+
 	};
-	
-	this.runSpeed = function(){
+
+	this.runSpeed = function() {
 		this.pos.add(this.velocity);
-		
+
 		this.velocity.mult(0);
 	};
-	
-	this.stayInScreen = function(){
-		if(this.pos.x > width-this.cS/2 || this.pos.x < -this.cS/2){
+
+	this.stayInScreen = function() {
+		if (this.pos.x > width - this.cS / 2 || this.pos.x < -this.cS / 2) {
 			this.acceleration.mult(createVector(-1, 1));
 		}
-		if(this.pos.y > height-this.cS/2 || this.pos.y < -this.cS/2){
+		if (this.pos.y > height - this.cS / 2 || this.pos.y < -this.cS / 2) {
 			this.acceleration.mult(createVector(1, -1));
 		}
 	};
-	
-	this.setOtherC = function(otherCreature){
+
+	this.setOtherC = function(otherCreature) {
 		this.otherC = otherCreature;
 	};
 

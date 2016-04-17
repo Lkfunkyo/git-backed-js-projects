@@ -2,12 +2,16 @@ function Cell(x, y, l, w) {
 	this.prototype = Object.create(RectObj.prototype);
 
 	RectObj.call(this, x, y, l, w);
-	
+
 	this.a = 255;
 	this.minus = 0;
 	this.r = {
-		tr: round(random(2, 5)), tl: round(random(2, 5)), br: round(random(2, 5)), bl: round(random(2, 5))
-	}
+		tr: round(random(2, 5)),
+		tl: round(random(2, 5)),
+		br: round(random(2, 5)),
+		bl: round(random(2, 5))
+	};
+	
 	this.state = false;
 
 	this.display = function(s, sW) {
@@ -22,6 +26,8 @@ function Cell(x, y, l, w) {
 	};
 
 	this.run = function() {
+		var floating = createVector(random(-1, 1), random(-1, 1));
+		
 		this.a -= this.minus;
 		this.isDead();
 
@@ -31,6 +37,11 @@ function Cell(x, y, l, w) {
 		}
 		if (this.a < 255 * (15 / 16)) {
 			this.state = true;
+		}
+		
+		this.runSpeed();
+		if(this.a > 255*(11/ 16)){
+			this.applySpeed(floating);
 		}
 	};
 

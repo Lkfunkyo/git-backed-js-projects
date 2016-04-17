@@ -1,14 +1,12 @@
-
-
 function setup() {
-  createCanvas(displayWidth, displayHeight-105);
-  
+	createCanvas(displayWidth, displayHeight - 105);
+
 }
 
 function draw() {
-	
+
 }
 
-function mousePressed(){
-	
+function mousePressed() {
+
 }

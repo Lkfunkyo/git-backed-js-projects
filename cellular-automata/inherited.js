@@ -10,6 +10,32 @@ function Mass(x, y){
 	
 	World.call(this, x, y);
 	
+	this.pos = createVector(this.x, this.y);
+	this.velocity = createVector(0, 0);
+	this.acceleration = createVector(0, 0);
+	
+	this.applyForce = function(force){
+		this.acceleration.add(force);
+	};
+	
+	this.applySpeed = function(speedVector){
+		this.velocity.add(speedVector);
+	};
+	
+	this.runAccel = function() {
+		this.velocity.add(this.acceleration);
+		this.pos.add(this.velocity);
+
+		this.acceleration.mult(0);
+
+	};
+
+	this.runSpeed = function() {
+		this.pos.add(this.velocity);
+
+		this.velocity.mult(0);
+	};
+	
 	Mass.amount++;
 }
 
@@ -20,10 +46,24 @@ function RectObj(x, y, l, w) {
 	
 	this.l = l;
 	this.w = w;
+	this.o;
 
-	this.pos = createVector(this.x, this.y);
-	this.velocity = createVector(0, 0);
-	this.acceleration = createVector(0, 0);
+	this.setOtherR = function(otherR){
+		this.o = otherR;
+	};
+	
+	this.intersects = function(){
+		if(this.o.pos.x >= this.pos.x || this.o.pos.x + this.o.l < this.pos.x + this.l || this.o.pos.y > this.pos.y || this.o.pos.y + this.o.w < this.pos.y + this.pos.y){
+			return true;
+		} else{
+			return false;
+		}
+	};
+	
+	this.avoid = function(space){
+		this.space = space || 3;
+		
+	};
 
 	RectObj.amount++;
 }
