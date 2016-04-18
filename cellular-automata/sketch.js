@@ -46,6 +46,7 @@ var tissueFunctions = {
 			for (var j = 0; j < height / yNum; j++) {
 				tissue[i][j].display(color(0, 60), 5);
 				tissue[i][j].run();
+				tissue[i][j].stayInScreen();
 
 				if (i > 0 && j > 0 && i < width / xNum - 1 && j < height / yNum - 1) {
 
