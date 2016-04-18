@@ -5,23 +5,27 @@ function RoundObj(x, y, l, w) {
 
 	this.l = l;
 	this.w = w || this.l;
-	this.bounce = 0.8;
 
 	this.pos = createVector(this.x, this.y);
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
+	
+	this.mass = map(this.l, 60, 20, 0.60, 1);
 
 	this.otherObj;
 	this.distance;
 	this.radiiSum;
 	this.mouseDistance;
-
-	this.display = function() {
-		ellipse(this.pos.x, this.pos.y, this.l, this.w);
-	};
 	
 	this.applyForce = function(force) {
-		this.acceleration.add(force);
+		var fo = createVector(force.x, force.y);
+		
+		fo.mult(this.mass);
+		this.acceleration.add(fo);
+	};
+	
+	this.display = function() {
+		ellipse(this.pos.x, this.pos.y, this.l, this.w);
 	};
 
 	this.run = function(otherCreature) {
@@ -91,13 +95,12 @@ function RoundObj(x, y, l, w) {
 		line(this.pos.x, this.pos.y, x, y);
 	};
 
-	this.bounceOff = function() {
-		this.bounce = 0;
-	};
-	
-	this.bounceOn = function(b){
-		this.bounce = b;
-	};
 
 	RoundObj.amount++;
 }
+
+
+World.amount = 0;
+Mass.amount = 0;
+RectObj.amount = 0;
+RoundObj.amount = 0;

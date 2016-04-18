@@ -20,6 +20,8 @@ function setup() {
 }
 
 function draw() {
+	background(25, 115, 35);
+	
 	tissueFunctions.display();
 
 }

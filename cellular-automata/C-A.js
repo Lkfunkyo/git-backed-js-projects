@@ -24,10 +24,10 @@ function Cell(x, y, l, w) {
 		translate(this.pos.x, this.pos.y);
 		rotate(this.degree);
 		
-		stroke(st);
+		stroke(19, 100, 25, st);
 		strokeWeight(stW);
 
-		fill(this.a, this.a, this.a);
+		fill(this.a, this.a, this.a, 60);
 		rect(0, 0, this.l, this.w, this.r.tl, this.r.tr, this.r.br, this.r.bl);
 		
 		pop();
