@@ -4,9 +4,6 @@ var grow, r, rt;
 var fillOn, unfillOn;
 var a, b;
 
-public class() dragon{
-	
-}
 
 function setup() {
   var canvas = createCanvas(displayWidth, displayHeight - 105);

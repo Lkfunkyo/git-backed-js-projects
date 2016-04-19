@@ -9,21 +9,21 @@ function RoundObj(x, y, l, w) {
 	this.pos = createVector(this.x, this.y);
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
-	
+
 	this.mass = map(this.l, 60, 20, 0.60, 1);
 
 	this.otherObj;
 	this.distance;
 	this.radiiSum;
 	this.mouseDistance;
-	
+
 	this.applyForce = function(force) {
 		var fo = createVector(force.x, force.y);
-		
+
 		fo.mult(this.mass);
 		this.acceleration.add(fo);
 	};
-	
+
 	this.display = function() {
 		ellipse(this.pos.x, this.pos.y, this.l, this.w);
 	};

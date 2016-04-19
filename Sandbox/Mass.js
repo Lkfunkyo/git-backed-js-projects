@@ -7,7 +7,15 @@ function Mass(x, y) {
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
 	this.gravity = createVector(0, 4);
-	this.gravity.setMag(4);
+	this.antiGravity = createVector(0, -4);
+	this.extraGravity = createVector(0, 4);
+	this.leftWind = createVector(-2, 0);
+	this.rightWind = createVector(2, 0);
+	this.gravity.setMag(1);
+	this.antiGravity.setMag(1);
+	this.extraGravity.setMag(1);
+	this.rightWind.setMag(1);
+	this.leftWind.setMag(1);
 	this.bounce = 0.8;
 
 	this.applyForce = function(force) {
@@ -22,11 +30,19 @@ function Mass(x, y) {
 	this.applyAntiGravity = function(){
 		var ng = createVector(this.gravity.x, this.gravity.y);
 		
-		this.acceleration.add(ng.mult(-1));
+		this.acceleration.add(this.antiGravity);
 	};
 	
 	this.applyExtraGravity = function(){
-		this.acceleration.add(this.gravity);
+		this.acceleration.add(this.extraGravity);
+	};
+	
+	this.applyLeftWind = function(){
+		this.acceleration.add(this.leftWind);
+	};
+	
+	this.applyRightWind = function(){
+		this.acceleration.add(this.rightWind);
 	};
 
 	this.applySpeed = function(speedVector) {
