@@ -10,7 +10,7 @@ function RoundObj(x, y, l, w) {
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
 
-	this.mass = map(this.l, 60, 20, 0.60, 1);
+	this.mass = map(this.l, 20, 150, 0.30, 1);
 
 	this.otherObj;
 	this.distance;
@@ -20,15 +20,37 @@ function RoundObj(x, y, l, w) {
 	this.applyForce = function(force) {
 		var fo = createVector(force.x, force.y);
 
-		fo.mult(this.mass);
+		fo.mult(1 / this.mass);
 		this.acceleration.add(fo);
+	};
+
+	this.applyGravity = function() {
+		this.acceleration.add(this.gravity);
+	};
+
+	this.applyAntiGravity = function() {
+		var ng = createVector(this.gravity.x, this.gravity.y);
+
+		this.acceleration.add(this.antiGravity);
+	};
+
+	this.applyExtraGravity = function() {
+		this.acceleration.add(this.extraGravity);
+	};
+
+	this.applyLeftWind = function() {
+		this.applyForce(this.leftWind);
+	};
+
+	this.applyRightWind = function() {
+		this.applyForce(this.rightWind);
 	};
 
 	this.display = function() {
 		ellipse(this.pos.x, this.pos.y, this.l, this.w);
 	};
 
-	this.run = function(otherCreature) {
+	this.runOtherC = function(otherCreature) {
 		this.otherC = otherCreature;
 
 
@@ -52,15 +74,10 @@ function RoundObj(x, y, l, w) {
 
 	this.avoid = function(otherCreature, s) {
 		this.otherC = otherCreature;
+
 		var space = s || 0;
 
 		if (this.intersects(this.otherC)) {
-			if (this.pos.x > this.otherC.pos.x || this.pos.x < this.otherC.pos.x) {
-				this.velocity.x *= -this.bounce;
-			}
-			if (this.pos.y > this.otherC.pos.y || this.pos.y < this.otherC.pos.y) {
-				this.velocity.y *= -this.bounce;
-			}
 
 			if (this.distance < this.radiiSum + space) { //&& this.y != height-this.cS/2 && this.y != this.cS/2 && this.x != width-this.cS/2 && this.x != this.cS/2){//&& this.cS <= this.otherC.cS) {
 				if (this.otherC.pos.x > this.pos.x) {

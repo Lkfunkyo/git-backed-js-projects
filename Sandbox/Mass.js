@@ -11,37 +11,40 @@ function Mass(x, y) {
 	this.extraGravity = createVector(0, 4);
 	this.leftWind = createVector(-2, 0);
 	this.rightWind = createVector(2, 0);
-	this.gravity.setMag(1);
-	this.antiGravity.setMag(1);
-	this.extraGravity.setMag(1);
-	this.rightWind.setMag(1);
-	this.leftWind.setMag(1);
+	this.gravity.setMag(4);
+	this.antiGravity.setMag(4);
+	this.extraGravity.setMag(2);
+	this.rightWind.setMag(0.09);
+	this.leftWind.setMag(0.09);
 	this.bounce = 0.8;
 
 	this.applyForce = function(force) {
 		this.acceleration.add(force);
 	};
 
-	
-	this.applyGravity = function(){
+	this.applyGravity = function() {
 		this.acceleration.add(this.gravity);
 	};
-	
-	this.applyAntiGravity = function(){
+
+	this.applyAntiGravity = function() {
 		var ng = createVector(this.gravity.x, this.gravity.y);
-		
+
 		this.acceleration.add(this.antiGravity);
 	};
-	
-	this.applyExtraGravity = function(){
+
+	this.applyExtraGravity = function() {
 		this.acceleration.add(this.extraGravity);
 	};
-	
-	this.applyLeftWind = function(){
+
+	this.applyFriction = function(detRate) {
+		this.velocity.x *= detRate;
+	};
+
+	this.applyLeftWind = function() {
 		this.acceleration.add(this.leftWind);
 	};
-	
-	this.applyRightWind = function(){
+
+	this.applyRightWind = function() {
 		this.acceleration.add(this.rightWind);
 	};
 
@@ -83,16 +86,13 @@ function Mass(x, y) {
 			this.pos.y = this.w / 2
 		}
 	};
-	
+
 	this.bounceOff = function() {
 		this.bounce = 0;
 	};
-	
-	this.bounceOn = function(b){
+
+	this.bounceOn = function(b) {
 		this.bounce = b;
 	};
 	Mass.amount++;
 }
-
-
-
