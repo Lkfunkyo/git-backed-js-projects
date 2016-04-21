@@ -36,7 +36,6 @@ function Cell(x, y, l, w) {
 	this.run = function() {
 		var floating = createVector(random(-1, 1), random(-1, 1));
 		this.a -= this.minus;
-		this.isDead();
 
 
 		if (this.a < 1) {
