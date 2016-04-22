@@ -1,6 +1,8 @@
 function World(x, y) {
 	this.x = x;
 	this.y = y;
+	this.firstX = x;
+	this.firstY = y;
 
 	World.amount++;
 }
@@ -14,26 +16,49 @@ function Mass(x, y) {
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
 	this.gravity = createVector(0, 4);
-	this.gravity.setMag(4);
+	this.antiGravity = createVector(0, -4);
+	this.extraGravity = createVector(0, 4);
+	this.leftWind = createVector(-2, 0);
+	this.rightWind = createVector(2, 0);
+	this.gravity.setMag(2);
+	this.antiGravity.setMag(2);
+	this.extraGravity.setMag(2);
+	this.rightWind.setMag(2);
+	this.leftWind.setMag(2);
 	this.bounce = 0.8;
 
 	this.applyForce = function(force) {
 		this.acceleration.add(force);
 	};
 
-	
-	this.applyGravity = function(){
+	this.applyGravity = function() {
 		this.acceleration.add(this.gravity);
 	};
-	
-	this.applyAntiGravity = function(){
+
+	this.applyAntiGravity = function() {
 		var ng = createVector(this.gravity.x, this.gravity.y);
-		
-		this.acceleration.add(ng.mult(-1));
+
+		this.acceleration.add(this.antiGravity);
+	};
+
+	this.applyExtraGravity = function() {
+		this.acceleration.add(this.extraGravity);
+	};
+
+	this.applyFriction = function(detRate) {
+		this.velocity.x *= detRate;
+	};
+
+	this.applyLeftWind = function() {
+		this.acceleration.add(this.leftWind);
+	};
+
+	this.applyRightWind = function() {
+		this.acceleration.add(this.rightWind);
 	};
 	
-	this.applyExtraGravity = function(){
-		this.acceleration.add(this.gravity);
+	this.applyExplosive = function(x, y){
+		
 	};
 
 	this.applySpeed = function(speedVector) {
@@ -75,11 +100,25 @@ function Mass(x, y) {
 		}
 	};
 	
+	this.reenterScreen = function(){
+		if (this.pos.x > width + this.l) {
+			this.pos.x = 0;
+		} else if (this.pos.x < 0) {
+			this.pos.x = width;
+		}
+		if (this.pos.y > height + this.w) {
+			this.pos.y =  0;
+
+		} else if (this.pos.y < 0 ) {
+			this.pos.y = height + this.w
+		}
+	};
+
 	this.bounceOff = function() {
 		this.bounce = 0;
 	};
-	
-	this.bounceOn = function(b){
+
+	this.bounceOn = function(b) {
 		this.bounce = b;
 	};
 	Mass.amount++;
@@ -87,6 +126,8 @@ function Mass(x, y) {
 
 function RectObj(x, y, l, w) {
 	rectMode(CENTER);
+	
+	
 	
 	this.prototype = Object.create(Mass.prototype);
 
@@ -98,10 +139,13 @@ function RectObj(x, y, l, w) {
 	this.radiiSum;
 	this.distance;
 	
-	this.mass = map(this.l*this.w, 300, 5000, 0.1, 1);
+	this.mass = map(this.l*this.w, 300, 400, 0.6, 1);
 
 	this.display = function() {
+		
 		rect(this.pos.x, this.pos.y, this.l, this.w);
+		
+		
 	};
 	
 	this.run = function(){
@@ -110,9 +154,31 @@ function RectObj(x, y, l, w) {
 	
 	this.applyForce = function(force) {
 		var fo = createVector(force.x, force.y);
-		
-		fo.mult(this.mass);
+
+		fo.mult(1 / this.mass);
 		this.acceleration.add(fo);
+	};
+
+	this.applyGravity = function() {
+		this.acceleration.add(this.gravity);
+	};
+
+	this.applyAntiGravity = function() {
+		var ng = createVector(this.gravity.x, this.gravity.y);
+
+		this.acceleration.add(this.antiGravity);
+	};
+
+	this.applyExtraGravity = function() {
+		this.acceleration.add(this.extraGravity);
+	};
+
+	this.applyLeftWind = function() {
+		this.applyForce(this.leftWind);
+	};
+
+	this.applyRightWind = function() {
+		this.applyForce(this.rightWind);
 	};
 
 	this.setOtherR = function(otherR) {

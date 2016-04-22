@@ -11,7 +11,7 @@ function RectObj(x, y, l, w) {
 	this.radiiSum;
 	this.distance;
 	
-	this.mass = map(this.l*this.w, 300, 5000, 0.1, 1);
+	this.mass = map(this.l*this.w, 700, 600, 0.1, 1);
 
 	this.display = function() {
 		rect(this.pos.x, this.pos.y, this.l, this.w);
@@ -23,9 +23,31 @@ function RectObj(x, y, l, w) {
 	
 	this.applyForce = function(force) {
 		var fo = createVector(force.x, force.y);
-		
-		fo.mult(this.mass);
+
+		fo.mult(1 / this.mass);
 		this.acceleration.add(fo);
+	};
+
+	this.applyGravity = function() {
+		this.acceleration.add(this.gravity);
+	};
+
+	this.applyAntiGravity = function() {
+		var ng = createVector(this.gravity.x, this.gravity.y);
+
+		this.acceleration.add(this.antiGravity);
+	};
+
+	this.applyExtraGravity = function() {
+		this.acceleration.add(this.extraGravity);
+	};
+
+	this.applyLeftWind = function() {
+		this.applyForce(this.leftWind);
+	};
+
+	this.applyRightWind = function() {
+		this.applyForce(this.rightWind);
 	};
 
 	this.setOtherR = function(otherR) {

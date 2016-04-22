@@ -35,7 +35,7 @@ function draw(){
 	for(var i = 0; i < rectArray.length; i++){
 		for(var j = 0; j < rectArray.length; j++){
 			if(i!=j){
-				rectArray[i].runOtherC(rectArray[j]);
+				rectArray[i].setOtherR(rectArray[j]);
 				rectArray[i].avoid(rectArray[j]);
 			}
 		}
@@ -63,5 +63,5 @@ function draw(){
 }
 
 function mouseClicked(){
-	rectArray.push(new RoundObj(mouseX, mouseY, random(30, 150)));
+	rectArray.push(new RectObj(mouseX, mouseY, random(20, 70), random(20, 70)));
 }
