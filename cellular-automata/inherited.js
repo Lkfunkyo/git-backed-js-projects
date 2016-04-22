@@ -100,19 +100,7 @@ function Mass(x, y) {
 		}
 	};
 	
-	this.reenterScreen = function(){
-		if (this.pos.x > width + this.l) {
-			this.pos.x = 0;
-		} else if (this.pos.x < 0) {
-			this.pos.x = width;
-		}
-		if (this.pos.y > height + this.w) {
-			this.pos.y =  0;
-
-		} else if (this.pos.y < 0 ) {
-			this.pos.y = height + this.w
-		}
-	};
+	
 
 	this.bounceOff = function() {
 		this.bounce = 0;
@@ -150,6 +138,20 @@ function RectObj(x, y, l, w) {
 	
 	this.run = function(){
 		
+	};
+	
+	this.reenterScreen = function(){
+		if (this.pos.x > width + this.l) {
+			this.pos.x = 0;
+		} else if (this.pos.x < 0) {
+			this.pos.x = width;
+		}
+		if (this.pos.y > height + this.w) {
+			this.pos.y =  0;
+
+		} else if (this.pos.y < 0 ) {
+			this.pos.y = height + this.w
+		}
 	};
 	
 	this.applyForce = function(force) {

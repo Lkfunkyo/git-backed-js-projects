@@ -62,7 +62,7 @@ var tissueFunctions = {
 			for (var j = 0; j < height / yNum; j++) {
 				tissue[i][j].display(color(0, 60), 5);
 				tissue[i][j].run();
-				tissue[i][j].reenterScreen();
+				tissue[i][j].stayInScreen();
 				tissue[i][j].runAccel();
 
 				if (keyIsPressed && tissue[i][j].isDead() !== true) {
