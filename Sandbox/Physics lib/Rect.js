@@ -1,10 +1,11 @@
 function RectObj(x, y, l, w) {
 	rectMode(CENTER);
-
+	
+	
 	this.prototype = Object.create(Mass.prototype);
 
 	Mass.call(this, x, y);
-
+	
 	this.l = l;
 	this.w = w;
 	this.o;
@@ -24,7 +25,7 @@ function RectObj(x, y, l, w) {
 		this.l = constrain(this.l, this.minL, this.maxL);
 		this.w = constrain(this.w, this.minW, this.maxW);
 		
-		this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
+		this.mass = map(this.l * this.w, this.minW * this.minL, this.maxW * this.maxL, 0.6, 1);
 	};
 
 	
@@ -32,16 +33,10 @@ function RectObj(x, y, l, w) {
 	this.run = function() {
 		var pVelocity = createVector(this.velocity.x, this.velocity.y);
 
-		this.momentum = pVelocity.mult(this.mass);
+		this.momentum = pVelocity.mult(1/this.mass);
+		this.momentum.mult(0);
 
 		this.touchingBoarder();
-	};
-
-	this.runOtherR = function(otherCreature) {
-		this.o = otherCreature;
-		
-		
-		this.setOtherR(this.o);
 	};
 
 	this.display = function() {
@@ -51,7 +46,7 @@ function RectObj(x, y, l, w) {
 	this.applyForce = function(force) {
 		var fo = createVector(force.x, force.y);
 
-		fo.mult(1 / this.mass);
+		fo.mult(1/this.mass);
 		this.acceleration.add(fo);
 	};
 
@@ -62,15 +57,17 @@ function RectObj(x, y, l, w) {
 	this.applyRightWind = function() {
 		this.applyForce(this.rightWind);
 	};
-
-	this.setOtherR = function(otherR) {
-		this.o = otherR;
+	
+	this.applyFloorFriction = function(detRate) {
+		var dR = constrain(detRate, 0.1, 0.99);
+		
+		this.velocity.x *= dR/this.mass;
 	};
 
 	this.intersects = function(otherR) {
-		this.o = otherR;
+		this.o = otherR || this.o;
 
-		if (this.o.pos.x >= this.pos.x || this.o.pos.x + this.o.l < this.pos.x + this.l || this.o.pos.y > this.pos.y || this.o.pos.y + this.o.w < this.pos.y + this.pos.y) {
+		if (this.pos.x < this.o.pos.x && this.o.pos.x <= this.pos.x + this.l || this.pos.x > this.o.pos.x && this.o.pos.x + this.o.l > this.pos.x || this.pos.y > this.o.pos.y && this.o.pos.y + this.o.w > this.pos.y || this.pos.y < this.o.pos.y && this.o.pos.y < this.pos.y + this.w) {
 			return true;
 		} else {
 			return false;
@@ -114,8 +111,17 @@ function RectObj(x, y, l, w) {
 	};
 
 	this.avoid = function(otherCreature, s) {
-		if(this.intersects(this.otherR)){
-			
+		if (this.o.pos.x >= this.pos.x) {
+			this.velocity.x -= this.o.momentum.x;
+		} 
+		if(this.o.pos.x + this.o.l < this.pos.x + this.l ){
+			this.o.velocity.x -= this.momentum.x;
+		}
+		if(this.o.pos.y > this.pos.y){
+			this.velocity.y -= this.o.momentum.y;
+		}
+		if(this.o.pos.y + this.o.w < this.pos.y + this.pos.y){
+			this.o.velocity.y -= this.momentum.y;
 		}
 	};
 

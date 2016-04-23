@@ -6,6 +6,7 @@ function setup() {
 
 function draw() {
 	stroke(19, 190, 40);
+	strokeWeight(3);
 
 	for (var i = 0; i < pixels.length; i++) {
 		pixels[i].display();
@@ -13,8 +14,8 @@ function draw() {
 	}
 	
 	if (mouseIsPressed) {
-		for (var i = 0; i < 10; i++) {
-			pixels.push(new Pixel(random(-1.05, 1.05) * random(5, 10) + mouseX, random(-1.05, 1.05) * random(5, 10) + mouseY));
+		for (var i = 0; i < 30; i++) {
+			pixels.push(new Pixel(random(-1.05, 1.05) * random(10, 20) + mouseX, random(-1.05, 1.05) * random(10, 20) + mouseY));
 		}
 	}
 }

@@ -20,7 +20,7 @@ function Mass(x, y) {
 	this.rightWind.setMag(0.25);
 	
 	this.bounce = 0.8;
-	this.momentum;
+	this.momentum = createVector(0, 0);
 	
 	this.radiiSum;
 	this.distance;
@@ -43,12 +43,6 @@ function Mass(x, y) {
 
 	this.applyExtraGravity = function() {
 		this.acceleration.add(this.extraGravity);
-	};
-
-	this.applyFriction = function(detRate) {
-		var dR = constrain(detRate, 0.1, 0.99);
-		
-		this.velocity.x *= dR;
 	};
 
 	this.applyLeftForce = function() {
