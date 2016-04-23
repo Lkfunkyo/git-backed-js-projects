@@ -15,7 +15,7 @@ function Cell(x, y, l, w) {
 		br: round(random(2, 5)),
 		bl: round(random(2, 5))
 	};
-
+	
 	this.state = false;
 
 	this.display = function(s, sW) {

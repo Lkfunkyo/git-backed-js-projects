@@ -29,7 +29,7 @@ function setup() {
 
 function draw() {
 	background(25, 115, 35);
-	
+
 	tissueFunctions.draw();
 }
 
@@ -52,7 +52,9 @@ var tissueFunctions = {
 			tissue[i] = [];
 
 			for (var j = 0; j < height / yNum; j++) {
-				tissue[i][j] = new Cell(random(1, 1.05)*i * width / xNum + xSpace / 2, random(1, 1.05)*j * height / yNum + ySpace / 2, width / xNum - xSpace, height / yNum - ySpace);
+				tissue[i][j] = new Cell(random(1, 1.05) * i * width / xNum + xSpace / 2, random(1, 1.05) * j * height / yNum + ySpace / 2, width / xNum - xSpace, height / yNum - ySpace);
+				tissue[i][j].setMinMaxVals(20, 70, 20, 70);
+				
 			}
 		}
 	},
@@ -71,12 +73,12 @@ var tissueFunctions = {
 					if (keyCode == DOWN_ARROW)
 						tissue[i][j].applyGravity();
 					if (keyCode == RIGHT_ARROW)
-						tissue[i][j].applyRightWind();
+						tissue[i][j].applyRightForce();
 					if (keyCode == LEFT_ARROW)
-						tissue[i][j].applyLeftWind();
+						tissue[i][j].applyLeftForce();
 				}
-				
-				if(tissue[i][j].isDead()){
+
+				if (tissue[i][j].isDead()) {
 					tissue[i][j].velocity.mult(0);
 				}
 
@@ -102,6 +104,9 @@ var tissueFunctions = {
 					crackle.play();
 					crackle.loop();
 				}
+
+				
+				//rectArray[i].bounceOff();
 			}
 		}
 	}

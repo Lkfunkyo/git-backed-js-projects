@@ -33,6 +33,7 @@ function draw() {
 		}
 			
 		rectArray[i].applyGravity();
+		
 
 	}
 
@@ -40,8 +41,8 @@ function draw() {
 	for (var i = 0; i < rectArray.length; i++) {
 		for (var j = 0; j < rectArray.length; j++) {
 			if (i != j) {
-				//rectArray[i].setOtherR(rectArray[j]);
-				//rectArray[i].avoid(rectArray[j]);
+				// rectArray[i].setOtherR(rectArray[j]);
+				// rectArray[i].avoid(rectArray[j]);
 			}
 		}
 	}
@@ -68,10 +69,9 @@ function draw() {
 }
 
 function mousePressed() {
-	rectArray.push(new RectObj(mouseX, mouseY, random(20, 70), random(20, 70)));
+	rectArray.push(new RectObj(mouseX, mouseY, random(30, 70), random(30, 70)));
 	
 	for(var i = 0; i < rectArray.length; i++){
 		rectArray[i].setMinMaxVals(20, 70, 20, 70);
-		rectArray[i].bounceOff();
 	}
 }

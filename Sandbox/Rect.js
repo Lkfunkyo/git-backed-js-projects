@@ -22,6 +22,8 @@ function RectObj(x, y, l, w) {
 
 		this.l = constrain(this.l, this.minL, this.maxL);
 		this.w = constrain(this.w, this.minW, this.maxW);
+		
+		console.log(this.l);
 	};
 
 	this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
@@ -36,7 +38,8 @@ function RectObj(x, y, l, w) {
 
 	this.runOtherR = function(otherCreature) {
 		this.o = otherCreature;
-
+		
+		
 		this.setOtherR(this.o);
 	};
 
@@ -114,7 +117,7 @@ function RectObj(x, y, l, w) {
 	};
 
 	this.avoid = function(otherCreature, s) {
-
+		
 	};
 
 	RectObj.amount++;
