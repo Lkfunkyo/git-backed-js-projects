@@ -8,10 +8,10 @@ var yStart = ySpace / 2;
 var song;
 
 function preload() {
-	//song = loadSound('sounds\\The Who - Teenage Wasteland -[ mymusicroad.net ].mp3');
+	song = loadSound('sounds\\The Who - Teenage Wasteland -[ mymusicroad.net ].mp3');
 	crackle = loadSound('sounds\\crackle.wav');
 
-	//song.amp(0.125);
+	song.amp(0.125);
 	crackle.amp(2);
 
 	crackle.pause();
@@ -21,7 +21,7 @@ function preload() {
 
 function setup() {
 	createCanvas(displayWidth, displayHeight - 105);
-	//song.loop();
+	song.loop();
 
 	tissueFunctions.setup();
 

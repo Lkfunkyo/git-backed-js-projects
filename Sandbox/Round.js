@@ -6,10 +6,6 @@ function RoundObj(x, y, l, w) {
 	this.l = l;
 	this.w = w || this.l;
 
-	this.pos = createVector(this.x, this.y);
-	this.velocity = createVector(0, 0);
-	this.acceleration = createVector(0, 0);
-
 	this.mass = map(this.l, 20, 150, 0.30, 1);
 
 	this.otherObj;
@@ -24,20 +20,6 @@ function RoundObj(x, y, l, w) {
 		this.acceleration.add(fo);
 	};
 
-	this.applyGravity = function() {
-		this.acceleration.add(this.gravity);
-	};
-
-	this.applyAntiGravity = function() {
-		var ng = createVector(this.gravity.x, this.gravity.y);
-
-		this.acceleration.add(this.antiGravity);
-	};
-
-	this.applyExtraGravity = function() {
-		this.acceleration.add(this.extraGravity);
-	};
-
 	this.applyLeftWind = function() {
 		this.applyForce(this.leftWind);
 	};
@@ -49,11 +31,24 @@ function RoundObj(x, y, l, w) {
 	this.display = function() {
 		ellipse(this.pos.x, this.pos.y, this.l, this.w);
 	};
+	
+	this.run = function(otherCreature){
+		var pVelocity = createVector(this.velocity.x, this.velocity.y);
+		
+		this.otherC = otherCreature || 0;
+		this.momentum = pVelocity.mult(this.mass);
+		
+		if(abs(this.acceleration.x) > 0 || abs(this.acceleration.y) > 0){
+			this.runAccel();
+		} else{
+			this.runSpeed();
+		}
+		
+		this.setOtherC(this.otherC);
+		this.runOtherC();
+	};
 
 	this.runOtherC = function(otherCreature) {
-		this.otherC = otherCreature;
-
-
 		this.distance = dist(this.otherC.pos.x, this.otherC.pos.y, this.pos.x, this.pos.y);
 		this.radiiSum = (this.otherC.l + this.l) / 2;
 	};

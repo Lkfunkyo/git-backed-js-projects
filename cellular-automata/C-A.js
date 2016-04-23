@@ -48,9 +48,9 @@ function Cell(x, y, l, w) {
 			this.state = true;
 		}
 
-		//this.runSpeed();
+		this.runSpeed();
 		if (this.a > 255 * (10 / 16)) {
-			//this.applySpeed(floating);
+			this.applySpeed(floating);
 		}
 		
 		this.rDeath = random(0, 1);

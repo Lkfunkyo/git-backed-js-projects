@@ -6,17 +6,28 @@ function Mass(x, y) {
 	this.pos = createVector(this.x, this.y);
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
+	
 	this.gravity = createVector(0, 4);
+	this.extraGravity = createVector(0, 2);
 	this.antiGravity = createVector(0, -4);
-	this.extraGravity = createVector(0, 4);
-	this.leftWind = createVector(-2, 0);
-	this.rightWind = createVector(2, 0);
-	this.gravity.setMag(4);
-	this.antiGravity.setMag(4);
-	this.extraGravity.setMag(2);
-	this.rightWind.setMag(0.09);
-	this.leftWind.setMag(0.09);
+	this.leftWind = createVector(-0.25, 0);
+	this.rightWind = createVector(0.25, 0);
+	
+	// this.gravity.setMag(4);
+	// this.antiGravity.setMag(0.25);
+	// this.extraGravity.setMag(0.25);
+	// this.leftWind.setMag(0.25);
+	// this.rightWind.setMag(0.25);
+	
 	this.bounce = 0.8;
+	this.momentum;
+	
+	this.radiiSum;
+	this.distance;
+	this.leftWall;
+	this.rightWall;
+	this.floorVal;
+	this.ceilVal;
 
 	this.applyForce = function(force) {
 		this.acceleration.add(force);
@@ -27,8 +38,6 @@ function Mass(x, y) {
 	};
 
 	this.applyAntiGravity = function() {
-		var ng = createVector(this.gravity.x, this.gravity.y);
-
 		this.acceleration.add(this.antiGravity);
 	};
 
@@ -37,14 +46,16 @@ function Mass(x, y) {
 	};
 
 	this.applyFriction = function(detRate) {
-		this.velocity.x *= detRate;
+		var dR = constrain(detRate, 0.1, 0.99);
+		
+		this.velocity.x *= dR;
 	};
 
-	this.applyLeftWind = function() {
+	this.applyLeftForce = function() {
 		this.acceleration.add(this.leftWind);
 	};
 
-	this.applyRightWind = function() {
+	this.applyRightForce = function() {
 		this.acceleration.add(this.rightWind);
 	};
 

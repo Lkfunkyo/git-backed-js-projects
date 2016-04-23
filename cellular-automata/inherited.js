@@ -15,17 +15,28 @@ function Mass(x, y) {
 	this.pos = createVector(this.x, this.y);
 	this.velocity = createVector(0, 0);
 	this.acceleration = createVector(0, 0);
+	
 	this.gravity = createVector(0, 4);
+	this.extraGravity = createVector(0, 2);
 	this.antiGravity = createVector(0, -4);
-	this.extraGravity = createVector(0, 4);
-	this.leftWind = createVector(-2, 0);
-	this.rightWind = createVector(2, 0);
-	this.gravity.setMag(2);
-	this.antiGravity.setMag(2);
-	this.extraGravity.setMag(2);
-	this.rightWind.setMag(2);
-	this.leftWind.setMag(2);
+	this.leftWind = createVector(-0.25, 0);
+	this.rightWind = createVector(0.25, 0);
+	
+	// this.gravity.setMag(4);
+	// this.antiGravity.setMag(0.25);
+	// this.extraGravity.setMag(0.25);
+	// this.leftWind.setMag(0.25);
+	// this.rightWind.setMag(0.25);
+	
 	this.bounce = 0.8;
+	this.momentum;
+	
+	this.radiiSum;
+	this.distance;
+	this.leftWall;
+	this.rightWall;
+	this.floorVal;
+	this.ceilVal;
 
 	this.applyForce = function(force) {
 		this.acceleration.add(force);
@@ -36,8 +47,6 @@ function Mass(x, y) {
 	};
 
 	this.applyAntiGravity = function() {
-		var ng = createVector(this.gravity.x, this.gravity.y);
-
 		this.acceleration.add(this.antiGravity);
 	};
 
@@ -46,19 +55,17 @@ function Mass(x, y) {
 	};
 
 	this.applyFriction = function(detRate) {
-		this.velocity.x *= detRate;
+		var dR = constrain(detRate, 0.1, 0.99);
+		
+		this.velocity.x *= dR;
 	};
 
-	this.applyLeftWind = function() {
+	this.applyLeftForce = function() {
 		this.acceleration.add(this.leftWind);
 	};
 
-	this.applyRightWind = function() {
+	this.applyRightForce = function() {
 		this.acceleration.add(this.rightWind);
-	};
-	
-	this.applyExplosive = function(x, y){
-		
 	};
 
 	this.applySpeed = function(speedVector) {
@@ -99,8 +106,6 @@ function Mass(x, y) {
 			this.pos.y = this.w / 2
 		}
 	};
-	
-	
 
 	this.bounceOff = function() {
 		this.bounce = 0;
@@ -114,9 +119,7 @@ function Mass(x, y) {
 
 function RectObj(x, y, l, w) {
 	rectMode(CENTER);
-	
-	
-	
+
 	this.prototype = Object.create(Mass.prototype);
 
 	Mass.call(this, x, y);
@@ -124,20 +127,95 @@ function RectObj(x, y, l, w) {
 	this.l = l;
 	this.w = w;
 	this.o;
-	this.radiiSum;
-	this.distance;
 	
-	this.mass = map(this.l*this.w, 300, 400, 0.6, 1);
+	this.minL = 25;
+	this.minW = 25;
+	this.maxL = 27;
+	this.maxW = 27;
+
+	this.setMinMaxVals = function(minL, maxL, minW, maxW) {
+		this.minL = minL;
+		this.minW = minW;
+		this.maxL = maxL;
+		this.maxW = maxW;
+
+		this.l = constrain(this.l, this.minL, this.maxL);
+		this.w = constrain(this.w, this.minW, this.maxW);
+	};
+
+	this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
+
+	this.run = function() {
+		var pVelocity = createVector(this.velocity.x, this.velocity.y);
+
+		this.momentum = pVelocity.mult(this.mass);
+
+		this.touchingBoarder();
+	};
+
+	this.runOtherR = function(otherCreature) {
+		this.o = otherCreature;
+
+		this.setOtherR(this.o);
+	};
 
 	this.display = function() {
-		
 		rect(this.pos.x, this.pos.y, this.l, this.w);
-		
-		
 	};
-	
-	this.run = function(){
+
+	this.applyForce = function(force) {
+		var fo = createVector(force.x, force.y);
+
+		fo.mult(1 / this.mass);
+		this.acceleration.add(fo);
+	};
+
+	this.applyLeftWind = function() {
+		var leftWind = createVector(this.leftWind.x*-1, 0);
 		
+		this.applyForce(leftWind);
+	};
+
+	this.applyRightWind = function() {
+		var rightWind = createVector(this.rightWind.x*-1, 0);
+		
+		this.applyForce(rightWind);
+	};
+
+	this.setOtherR = function(otherR) {
+		this.o = otherR;
+	};
+
+	this.intersects = function(otherR) {
+		this.o = otherR;
+
+		if (this.o.pos.x >= this.pos.x || this.o.pos.x + this.o.l < this.pos.x + this.l || this.o.pos.y > this.pos.y || this.o.pos.y + this.o.w < this.pos.y + this.pos.y) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	this.touchingBoarder = function() {
+		if (this.pos.x <= 0)
+			this.leftWall = true;
+		else
+			this.leftWall = false;
+
+		if (this.pos.x > width - this.l)
+			this.rightWall = true;
+		else
+			this.rightWall = false;
+
+		if (this.pos.y > height - this.w)
+			this.floorVal = true;
+		else
+			this.floorVal = false;
+
+		if (this.pos.y < 0)
+			this.ceilVal = true;
+		else
+			this.ceilVal = false;
 	};
 	
 	this.reenterScreen = function(){
@@ -153,52 +231,9 @@ function RectObj(x, y, l, w) {
 			this.pos.y = height + this.w
 		}
 	};
-	
-	this.applyForce = function(force) {
-		var fo = createVector(force.x, force.y);
 
-		fo.mult(1 / this.mass);
-		this.acceleration.add(fo);
-	};
-
-	this.applyGravity = function() {
-		this.acceleration.add(this.gravity);
-	};
-
-	this.applyAntiGravity = function() {
-		var ng = createVector(this.gravity.x, this.gravity.y);
-
-		this.acceleration.add(this.antiGravity);
-	};
-
-	this.applyExtraGravity = function() {
-		this.acceleration.add(this.extraGravity);
-	};
-
-	this.applyLeftWind = function() {
-		this.applyForce(this.leftWind);
-	};
-
-	this.applyRightWind = function() {
-		this.applyForce(this.rightWind);
-	};
-
-	this.setOtherR = function(otherR) {
-		this.o = otherR;
-	};
-
-	this.intersects = function(otherR) {
-		this.o = otherR;
-		
-		if (this.o.pos.x >= this.pos.x || this.o.pos.x + this.o.l < this.pos.x + this.l || this.o.pos.y > this.pos.y || this.o.pos.y + this.o.w < this.pos.y + this.pos.y) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-	
 	this.avoid = function(otherCreature, s) {
-		
+
 	};
 
 	RectObj.amount++;
