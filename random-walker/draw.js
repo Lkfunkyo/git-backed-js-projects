@@ -1,14 +1,25 @@
-var walker = [], num = 20, on = true;
+var walker = [],
+  num = 20,
+  on = true;
 var userWalker;
 
-function setup() {
-  createCanvas(displayWidth, displayHeight-105);
-  background(0);
-  for (var i = 0; i < num; i++) {
-    walker.push(new Walker(random(width), random(height)));  
-  }
+function preload() {
+  song = loadSound('sounds\\space.mp3');
+  song.amp(0.125);
   
-  userWalker = new Walker(0, 0, width/2, height/2);
+}
+
+function setup() {
+  createCanvas(displayWidth, displayHeight - 105);
+  background(0);
+  
+  song.loop();
+  
+  for (var i = 0; i < num; i++) {
+    walker.push(new Walker(random(width), random(height)));
+  }
+
+  userWalker = new Walker(0, 0, width / 2, height / 2);
 }
 
 function draw() {
@@ -32,32 +43,37 @@ function keyPressed() {
   if (keyCode == BACKSPACE) {
     background(0);
   }
-  if(keyCode == UP_ARROW){
+  if (keyCode == UP_ARROW) {
     userWalker.up();
-  } else if(keyCode == DOWN_ARROW) {
+  } else if (keyCode == DOWN_ARROW) {
     userWalker.down();
   }
-  
-  if(keyCode == LEFT_ARROW){
+
+  if (keyCode == LEFT_ARROW) {
     userWalker.left();
-  } else if(keyCode == RIGHT_ARROW){
+  } else if (keyCode == RIGHT_ARROW) {
     userWalker.right();
   }
 
 }
-function keyTyped(){
-  if(key == '+'){
+
+function keyTyped() {
+  if (key == '+') {
     walker.push(new Walker(random(width), random(height)));
-  } else if(key == '-'){
-    walker.splice(walker.length-1, 1);
+  } else if (key == '-') {
+    walker.splice(walker.length - 1, 1);
+  }
+  
+  if(key == "c"){
+    userWalker.changeColor();
   }
 }
 
 function calledFunctions() {
-    for (var i = 0; i < walker.length; i++) {
-      walker[i].display();
-      walker[i].stayInScreen();
-      walker[i].move();
-    }
-
+  for (var i = 0; i < walker.length; i++) {
+    walker[i].display();
+    walker[i].stayInScreen();
+    walker[i].move();
   }
+
+}
