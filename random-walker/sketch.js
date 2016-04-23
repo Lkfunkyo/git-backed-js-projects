@@ -76,4 +76,8 @@ function Walker(xMin, xMax, yMin, yMax) {
       this.y = height + cS / 2;
     }
   };
+  
+  this.changeColor = function(){
+    this.col = color(random(255), random(255), random(255));
+  };
 }
