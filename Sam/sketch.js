@@ -1,29 +1,22 @@
 var pixels = [];
 
 function setup() {
-	createCanvas(displayWidth, displayHeight - 105);
-
-
+	createCanvas(displayWidth*2.5, displayHeight*2.5);
 }
 
 function draw() {
 	stroke(19, 190, 40);
-	strokeWeight(1);
 
 	for (var i = 0; i < pixels.length; i++) {
 		pixels[i].display();
 
 	}
 	
-	erase();
-	
 	if (mouseIsPressed) {
 		for (var i = 0; i < 10; i++) {
 			pixels.push(new Pixel(random(-1.05, 1.05) * random(5, 10) + mouseX, random(-1.05, 1.05) * random(5, 10) + mouseY));
 		}
 	}
-
-	
 }
 
 function erase() {

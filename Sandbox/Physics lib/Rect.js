@@ -13,7 +13,8 @@ function RectObj(x, y, l, w) {
 	this.minW = 25;
 	this.maxL = 27;
 	this.maxW = 27;
-
+	this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
+	
 	this.setMinMaxVals = function(minL, maxL, minW, maxW) {
 		this.minL = minL;
 		this.minW = minW;
@@ -23,10 +24,10 @@ function RectObj(x, y, l, w) {
 		this.l = constrain(this.l, this.minL, this.maxL);
 		this.w = constrain(this.w, this.minW, this.maxW);
 		
-		console.log(this.l);
+		this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
 	};
 
-	this.mass = map(this.l * this.w, this.maxW * this.maxL, this.minW * this.minL, 0.1, 1);
+	
 
 	this.run = function() {
 		var pVelocity = createVector(this.velocity.x, this.velocity.y);
@@ -55,15 +56,11 @@ function RectObj(x, y, l, w) {
 	};
 
 	this.applyLeftWind = function() {
-		var leftWind = createVector(this.leftWind.x*-1, 0);
-		
-		this.applyForce(leftWind);
+		this.applyForce(this.leftWind);
 	};
 
 	this.applyRightWind = function() {
-		var rightWind = createVector(this.rightWind.x*-1, 0);
-		
-		this.applyForce(rightWind);
+		this.applyForce(this.rightWind);
 	};
 
 	this.setOtherR = function(otherR) {
@@ -117,7 +114,9 @@ function RectObj(x, y, l, w) {
 	};
 
 	this.avoid = function(otherCreature, s) {
-		
+		if(this.intersects(this.otherR)){
+			
+		}
 	};
 
 	RectObj.amount++;

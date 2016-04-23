@@ -3,13 +3,14 @@ var rectArray = [];
 var bgImg;
 
 function preload() {
-	var img = round(random(1, 10));
+	var img = "cosmonaut";//round(random(1, 10));
 	
 	bgImg = loadImage("images\\" + img + ".jpg");
 }
 
 function setup() {
 	createCanvas(displayWidth, displayHeight - 105);
+	
 }
 
 function draw() {
@@ -37,16 +38,6 @@ function draw() {
 
 	}
 
-
-	for (var i = 0; i < rectArray.length; i++) {
-		for (var j = 0; j < rectArray.length; j++) {
-			if (i != j) {
-				// rectArray[i].setOtherR(rectArray[j]);
-				// rectArray[i].avoid(rectArray[j]);
-			}
-		}
-	}
-
 	if (keyIsPressed) {
 		for (var i = 0; i < rectArray.length; i++) {
 			if (keyCode == LEFT_ARROW) {
@@ -62,6 +53,8 @@ function draw() {
 				rectArray[i].applyExtraGravity();
 			}
 			if (keyCode == BACKSPACE) {
+				RectObj.amount -= rectArray.length;
+				
 				rectArray.splice(0, rectArray.length);
 			}
 		}

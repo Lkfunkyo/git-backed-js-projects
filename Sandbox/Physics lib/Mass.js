@@ -13,11 +13,11 @@ function Mass(x, y) {
 	this.leftWind = createVector(-0.25, 0);
 	this.rightWind = createVector(0.25, 0);
 	
-	// this.gravity.setMag(4);
-	// this.antiGravity.setMag(0.25);
-	// this.extraGravity.setMag(0.25);
-	// this.leftWind.setMag(0.25);
-	// this.rightWind.setMag(0.25);
+	this.gravity.setMag(4);
+	this.antiGravity.setMag(4);
+	this.extraGravity.setMag(0.25);
+	this.leftWind.setMag(0.25);
+	this.rightWind.setMag(0.25);
 	
 	this.bounce = 0.8;
 	this.momentum;
@@ -105,5 +105,7 @@ function Mass(x, y) {
 	this.bounceOn = function(b) {
 		this.bounce = b;
 	};
+	
+	
 	Mass.amount++;
 }
