@@ -10,14 +10,7 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(displayWidth, displayHeight - 105);
-	
-	for(var i = 0; i < 360; i += 360/60){
-		rectArray.push(new RectObj(100*sin(i) + width/2, 100*cos(i) + height/2, 0, 0))
-	}
-	for (var i = 0; i < rectArray.length; i++) {
-		rectArray[i].setMinMaxVals(5, 70, 5, 70);
-	}
+	createCanvas(displayWidth, displayHeight-40);
 }
 
 function draw() {
@@ -27,10 +20,12 @@ function draw() {
 	strokeWeight(4);
 	noFill();
 
-	angle += 0.0625;
+	//angle += 0.0625;
+	
+	ellipse(width/2, height/2, 100, 100);
 
 	for (var i = 0; i < rectArray.length; i++) {
-		mouseForce[i] = createVector(50 * sin(angle) + width / 2, 50 * cos(angle) + height / 2);
+		mouseForce[i] = createVector(1 * sin(angle) + width / 2, 1 * cos(angle) + height / 2);
 		mouseForce[i].sub(rectArray[i].pos);
 		mouseForce[i].setMag(0.25);
 
@@ -41,26 +36,14 @@ function draw() {
 		rectArray[i].stayInScreen();
 
 
-		rectArray[i].applyForce(mouseForce[i]);
+		//rectArray[i].applyForce(mouseForce[i]);
 
 
 		if (rectArray[i].floorVal) {
-			//rectArray[i].applyFloorFriction(0.96);
+			rectArray[i].applyFloorFriction(0.99);
 		}
 
-		//rectArray[i].applyGravity();
-
-
-		for (var j = 0; j < rectArray.length; j++) {
-			if (i != j) {
-
-				if (rectArray[i].intersects(rectArray[j])) {
-					//rectArray[i].avoid(rectArray[j]);
-
-					//console.log(true);
-				}
-			}
-		}
+		rectArray[i].applyGravity();
 
 	}
 
@@ -95,6 +78,17 @@ function mousePressed() {
 
 	for (var i = 0; i < rectArray.length; i++) {
 		rectArray[i].setMinMaxVals(20, 70, 20, 70);
+		rectArray[i].setBounce(0.1);
 	}
 	//console.log(rectArray[i].mass);
+}
+
+function keyTyped(){
+	if(key == 'f'){
+		if(fullscreen()){
+			fullscreen(false);
+		} else{
+			fullscreen(true);
+		}
+	}
 }

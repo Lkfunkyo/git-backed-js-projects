@@ -92,11 +92,7 @@ function Mass(x, y) {
 		}
 	};
 
-	this.bounceOff = function() {
-		this.bounce = 0;
-	};
-
-	this.bounceOn = function(b) {
+	this.setBounce = function(b) {
 		this.bounce = b;
 	};
 	
