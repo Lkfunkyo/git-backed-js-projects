@@ -12,6 +12,7 @@ function Walker(xMin, xMax, yMin, yMax) {
   this.yRt = 0;
   this.x = random(width);
   this.y = random(height);
+  this.r = false;
   this.distance = 15;
   this.cS = 15;
   this.col = color(random(255), random(255), random(255));
@@ -20,6 +21,9 @@ function Walker(xMin, xMax, yMin, yMax) {
 
   this.display = function() {
     var cS = this.cS;
+    if(this.r){
+    	this.changeColor();
+    }
 
     strokeWeight(5);
     stroke(255, 100);
@@ -33,15 +37,15 @@ function Walker(xMin, xMax, yMin, yMax) {
     var yVal = random(0, 1);
     
     if(xVal > 0.5){
-      this.x -= this.distance;
+      this.left();
     } else{
-      this.x += this.distance;
+      this.right();
     }
     
     if(yVal > 0.5){
-      this.y -= this.distance;
+      this.up();
     } else{
-      this.y += this.distance;
+      this.down();
     }
   };
   this.left = function() {
@@ -79,5 +83,13 @@ function Walker(xMin, xMax, yMin, yMax) {
   
   this.changeColor = function(){
     this.col = color(random(255), random(255), random(255));
+  };
+  
+  this.ra = function(){
+  	if(this.r){
+  		this.r = false;
+  	} else {
+  		this.r = true;
+  	}
   };
 }

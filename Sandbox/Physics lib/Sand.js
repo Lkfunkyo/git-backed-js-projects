@@ -1,59 +1,56 @@
 function Sand(x, y, l, w) {
 	this.prototype = Object.create(Mass.prototype);
-
-	Mass.call(this, x, y);
+	Mass.call(this, x, y, l, w);
 
 	this.l = l;
 	this.w = w || this.l;
 
-	this.pos = createVector(this.x, this.y);
-	this.velocity = createVector(0, 0);
-	this.acceleration = createVector(0, 0);
-
-	this.mass = map(this.l, 20, 150, 0.30, 1);
+	this.mass = map(this.l*this.w, 20, 150, 0.30, 1);
 
 	this.otherObj;
 	this.distance;
 	this.radiiSum;
 	this.mouseDistance;
+	this.col = color(random(255), random(255), random(255));
+	
+	this.minL = 25;
+	this.minW = 25;
+	this.maxL = 27;
+	this.maxW = 27;
+	this.mass = map(this.l * this.w, this.minW * this.minL, this.maxW * this.maxL, 0.6, 1);
+	
+	this.setMinMaxVals = function(minL, maxL, minW, maxW) {
+		this.minL = minL;
+		this.minW = minW;
+		this.maxL = maxL;
+		this.maxW = maxW;
 
-	this.applyForce = function(force) {
-		var fo = createVector(force.x, force.y);
+		this.l = constrain(this.l, this.minL, this.maxL);
+		this.w = constrain(this.w, this.minW, this.maxW);
 
-		fo.mult(1 / this.mass);
-		this.acceleration.add(fo);
+		this.mass = map(this.l * this.w, this.minW * this.minL, this.maxW * this.maxL, 0.6, 1);
 	};
 
-	this.applyGravity = function() {
-		this.acceleration.add(this.gravity);
-	};
+	this.applyFloorFriction = function(detRate) {
+		var dR = constrain(detRate, 0.1, 0.99999);
+		var vel = createVector(this.velocity.x, this.velocity.y);
+		vel.normalize();
 
-	this.applyAntiGravity = function() {
-		var ng = createVector(this.gravity.x, this.gravity.y);
+		var friction = createVector(vel.x * -dR, 0);
 
-		this.acceleration.add(this.antiGravity);
-	};
-
-	this.applyExtraGravity = function() {
-		this.acceleration.add(this.extraGravity);
-	};
-
-	this.applyLeftWind = function() {
-		this.applyForce(this.leftWind);
-	};
-
-	this.applyRightWind = function() {
-		this.applyForce(this.rightWind);
+		this.applyForce(friction);
 	};
 
 	this.display = function() {
-		ellipse(this.pos.x, this.pos.y, this.l, this.w);
+		stroke(this.col);
+		point(this.pos.x, this.pos.y);
+	};
+
+	this.run = function(otherCreature) {
+		
 	};
 
 	this.runOtherC = function(otherCreature) {
-		this.otherC = otherCreature;
-
-
 		this.distance = dist(this.otherC.pos.x, this.otherC.pos.y, this.pos.x, this.pos.y);
 		this.radiiSum = (this.otherC.l + this.l) / 2;
 	};
@@ -74,7 +71,7 @@ function Sand(x, y, l, w) {
 
 	this.avoid = function(otherCreature, s) {
 		this.otherC = otherCreature;
-		var h = map(this.mass, 20 / 2 * PI, 60 / 2 * PI, -1, 1);
+
 		var space = s || 0;
 
 		if (this.intersects(this.otherC)) {

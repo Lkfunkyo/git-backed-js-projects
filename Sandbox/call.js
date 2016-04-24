@@ -1,7 +1,5 @@
-var rectArray = [];
-var mouseForce = [];
-var angle = 0;
 var bgImg;
+var s = [];
 
 function preload() {
 	var img = "cosmonaut"; //round(random(1, 10));
@@ -10,7 +8,15 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(displayWidth, displayHeight-40);
+	createCanvas(displayWidth, displayHeight - 40);
+
+	for (var i = 0; i < 10; i++) {
+		var size = random(40, 100);
+
+		s.push(new Spindle(random(width), random(height), random(50, 100), size, size, 30, 9, 9, 625));
+	}
+
+
 }
 
 function draw() {
@@ -20,74 +26,51 @@ function draw() {
 	strokeWeight(4);
 	noFill();
 
-	//angle += 0.0625;
-	
-	ellipse(width/2, height/2, 100, 100);
-
-	for (var i = 0; i < rectArray.length; i++) {
-		mouseForce[i] = createVector(1 * sin(angle) + width / 2, 1 * cos(angle) + height / 2);
-		mouseForce[i].sub(rectArray[i].pos);
-		mouseForce[i].setMag(0.25);
-
-		rectArray[i].display();
-		rectArray[i].run();
-		rectArray[i].runAccel();
-
-		rectArray[i].stayInScreen();
-
-
-		//rectArray[i].applyForce(mouseForce[i]);
-
-
-		if (rectArray[i].floorVal) {
-			rectArray[i].applyFloorFriction(0.99);
+	for (var i = 0; i < s.length; i++) {
+		s[i].display();
+		s[i].runAccel();
+		s[i].stayInScreen();
+		s[i].applyGravity();
+		
+		if(s[i].floorVal){
+			s[i].applyFloorFriction();
 		}
-
-		rectArray[i].applyGravity();
-
 	}
 
 	if (keyIsPressed) {
-		for (var i = 0; i < rectArray.length; i++) {
+		for (var i = 0; i < s.length; i++) {
 			if (keyCode == LEFT_ARROW) {
-				rectArray[i].applyLeftWind();
+				s[i].applyLeftWind();
 			}
 			if (keyCode == RIGHT_ARROW) {
-				rectArray[i].applyRightWind();
+				s[i].applyRightWind();
 			}
 			if (keyCode == UP_ARROW) {
-				rectArray[i].applyAntiGravity();
+				s[i].applyAntiGravity();
 			}
 			if (keyCode == DOWN_ARROW) {
-				rectArray[i].applyExtraGravity();
+				s[i].applyExtraGravity();
 			}
-			if (keyCode == BACKSPACE) {
-				RectObj.amount -= rectArray.length;
 
-				rectArray.splice(0, rectArray.length);
-			}
+
+			// if (keyCode == BACKSPACE) {
+			// 	RectObj.amount -= roundArray.length;
+
+			// 	roundArray.splice(0, roundArray.length);
+			// }
+			
 		}
+
+
 	}
-
-
-
 }
 
-function mousePressed() {
-	rectArray.push(new RectObj(mouseX, mouseY, random(20, 70), random(20, 70)));
 
-	for (var i = 0; i < rectArray.length; i++) {
-		rectArray[i].setMinMaxVals(20, 70, 20, 70);
-		rectArray[i].setBounce(0.1);
-	}
-	//console.log(rectArray[i].mass);
-}
-
-function keyTyped(){
-	if(key == 'f'){
-		if(fullscreen()){
+function keyTyped() {
+	if (key == 'f') {
+		if (fullscreen()) {
 			fullscreen(false);
-		} else{
+		} else {
 			fullscreen(true);
 		}
 	}
