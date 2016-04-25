@@ -53,7 +53,7 @@ function Spindle(x, y, num, l, w, size, velLim, minA, maxA) {
 		
 		strokeWeight(4);
 		stroke(0);
-		fill(0, 190);s
+		//fill(0, 190);s
 		ellipse(this.pos.x, this.pos.y, this.cS, this.cS);
 
 		for (var i = 0; i < this.RoundArray.length; i++) {

@@ -12,8 +12,8 @@ function preload() {
 function setup() {
 	createCanvas(displayWidth, displayHeight - 105);
 
-	for (var i = 0; i < width; i += width / 20) {
-		for (var j = 0; j < height; j += height / 20) {
+	for (var i = 0; i < width; i += width / 100) {
+		for (var j = 0; j < height; j += height / 100) {
 			points.push(new Sand(i, j, 2, 2));
 		}
 	}

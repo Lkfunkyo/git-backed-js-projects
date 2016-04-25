@@ -42,7 +42,7 @@ function Sand(x, y, l, w) {
 	};
 
 	this.display = function() {
-		stroke(this.col);
+		stroke(255);
 		point(this.pos.x, this.pos.y);
 	};
 
