@@ -59,6 +59,10 @@ function keyPressed() {
 	} else if (keyCode == RIGHT_ARROW) {
 		userWalker.right();
 	}
+	
+	if(keyCode == ESCAPE){
+	  fullscreen(false);
+	}
 }
 
 function keyTyped() {
